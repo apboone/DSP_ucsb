@@ -2,11 +2,8 @@
 
 Strategy_Predictor = True 
 
-
 import os
 import xlsxwriter
-
-
 
 ####
 #   python scripting items to do
@@ -15,6 +12,8 @@ import xlsxwriter
 #   - I would love to figure out how to make each of those scripts print 
 #   to a new sheet within the excel file --> solution can be found here: https://xlsxwriter.readthedocs.io/workbook.html
 
+a = [0,179]
+b = [180,359]
 
 #******************************************************************************************************
 #                                       DSP1 COORDS
@@ -350,14 +349,6 @@ def trialChecker():
         	if length >= .84 and (lnRatio < .7 or RVlnRatio < .7):
         		return "UNCODABLE"
    
-    # if length < .84 and (lnRatio < .7 or RVlnRatio < .7):
-    #     return "SHORTCUT LIBERAL"
-    # if lnRatio >= .7:
-    #     return "LEARNED LIBERAL"
-    # if RVlnRatio >= .7:
-    #     return "REVERSED LEARNED LIBERAL"
-    # if length >= .84 and (lnRatio < .7 or RVlnRatio < .7):
-    #     return "UNCODABLE"
     
     
 def appendInput():
@@ -382,7 +373,7 @@ if (Strategy_Predictor == True):
     indir = "/Users/alexanderboone/Desktop/test/testData/"
     outdir = "/Users/alexanderboone/Desktop/test/Steps_Counter_OutPuts/"
 
-    wb = xlsxwriter.Workbook("/Users/alexanderboone/Desktop/test/Steps_Counter_OutPuts/StrategyPredictor_TESTDATA1.xlsx")
+    wb = xlsxwriter.Workbook("/Users/alexanderboone/Desktop/test/Steps_Counter_OutPuts/StrategyPredictor_AllTestFiles.xlsx")
     sheet = wb.add_worksheet('Sheet')
     
     header = ["Participant", "TrialNo", "TrialID", "Total Steps", "shortcut steps", "learned steps",
@@ -516,26 +507,30 @@ if (Strategy_Predictor == True):
                             curr_Y = int(coord[1])
                             
                             box = [curr_X, curr_Y]
-                            print(steps)
-                            if (numOfBoxLines < 2):#changed from 3 to 1. was 3 to avoid cases of 1,0. seems that this is a problem.
+                            #print(steps)
+                            if (numOfBoxLines < 0):#changed from 3 to 1. was 3 to avoid cases of 1,0. seems that this is a problem.
                                 numOfBoxLines += 1
                                 #if box in boxes_touched == [1,0]: #this is cutting out any steps on this coord ANYTIME not jsut in the start
                                		#steps -= 1
+
                             elif (prev_X != curr_X or prev_Y != curr_Y):
                                 if (box in boxes_touched):
                                     retrace_steps += 1
 
+
                                 if (abs(prev_X-curr_X)) + (abs(prev_Y-curr_Y)) > 1: 
                                     steps += 1
                                     added_steps += 1
-                                
+
                                 boxes_touched.append(box)
+                                print(box)
                                 print(boxes_touched)
                                 steps += 1
                                 prev_X = curr_X
                                 prev_Y = curr_Y
-                                print(steps)
-                                
+                                #print(steps)
+                        #print(boxes_touched)
+                        print(steps)
                             
                         prev_line = current_line
                         
@@ -585,7 +580,7 @@ if (Strategy_Predictor == True):
                     sheet.write(row, col, i)
                     col += 1
                 row += 1     
-    
+
 wb.close()
 
 
