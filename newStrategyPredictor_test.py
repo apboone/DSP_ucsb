@@ -1,5 +1,3 @@
-
-
 Strategy_Predictor = True 
 
 import os
@@ -280,12 +278,12 @@ def getCounters(TrialID):
     counters = [0, 0, 0, 0]
     box_num = 1
     for coord in boxes_touched:
-        if box_num == 2:
-            if coord not in getShortcut(TrialID): # why is this being done? ln 285-286
-                counters[1] -= 1
-        if box_num == len(boxes_touched) - 1:
-            if coord not in getREVLearned(TrialID):
-                counters[2] -= 1
+        # if box_num == 2:
+            # if coord not in getShortcut(TrialID): # why is this being done? ln 285-286
+            #     counters[1] -= 1
+        #if box_num == len(boxes_touched) - 1:
+        #    if coord not in getREVLearned(TrialID):
+        #        counters[2] -= 1
         if coord in getShortcut(TrialID):
             counters[0] += 1
         if coord in getLearned(TrialID):
@@ -305,6 +303,7 @@ def getInfo():
     info[0] = float(steps/dsp1[TrialNo-1][1])
     info[1] = float(lnCounter/steps)
     info[2] = float(RVlnCounter/steps)
+    #print info
     return info
 
 def trialChecker():
@@ -331,7 +330,7 @@ def trialChecker():
         	if length >= .84 and (lnRatio < .7 or RVlnRatio < .7):
         		return "UNCODABLE"
 
-#what it does?
+
     if (TrialID.startswith("dsp2")):
         if scCounter == dsp2[TrialNo-1][0] and steps == dsp2[TrialNo-1][0]:
             return "SHORTCUT"
@@ -481,7 +480,6 @@ if (Strategy_Predictor == True):
                         TrialID = split_trial[1] + "_" + split_trial[2][:-1]
                         
                         
-                        
                         print (Trial)
                         #print(TrialID)
                         
@@ -496,7 +494,7 @@ if (Strategy_Predictor == True):
                         input_line = []
                         retrace_steps = 0
                         added_steps = 0
-                         
+                        
                     else:
                         
                         if "b" in current_line:
@@ -517,25 +515,33 @@ if (Strategy_Predictor == True):
                                 if (box in boxes_touched):
                                     retrace_steps += 1
 
-
                                 if (abs(prev_X-curr_X)) + (abs(prev_Y-curr_Y)) > 1: 
-                                    steps += 1
+                                    #steps += 1
                                     added_steps += 1
 
+
                                 boxes_touched.append(box)
-                                print(box)
-                                print(boxes_touched)
-                                steps += 1
+
+                                #print(steps)
+                                #print(box)
+                                #print(boxes_touched)
+
+                                steps += 1 
                                 prev_X = curr_X
                                 prev_Y = curr_Y
+
+                                #if it hits !!, subtact 1
                                 #print(steps)
                         #print(boxes_touched)
                         print(steps)
+                        #print(RVlnCounter)
                             
                         prev_line = current_line
                         
                         if TrialNo == 24:
                             curr_line = current_line
+
+
                     
                 lineInfo = getLineInfo(prev_line)
                 Time_Elapsed = lineInfo[0]
@@ -582,6 +588,4 @@ if (Strategy_Predictor == True):
                 row += 1     
 
 wb.close()
-
-
 
